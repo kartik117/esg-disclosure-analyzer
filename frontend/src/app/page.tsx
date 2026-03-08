@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ESGCategoryChart from "../../components/ESGCategoryChart";
 import ClaimQualityByCategoryChart from "../../components/ClaimQualityByCategoryChart";
 import PageDensityChart from "../../components/PageDensityChart";
@@ -65,6 +65,7 @@ const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 export default function HomePage() {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const [askLoading, setAskLoading] = useState(false);
@@ -325,70 +326,127 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900">
-            ESG Disclosure Analyzer
-          </h1>
-          <p className="mt-2 text-slate-600">
-            Analyze sustainability reports, identify measurable ESG claims, and
-            ask AI questions about disclosures.
-          </p>
-        </header>
+    <main className="min-h-screen">
+      <div className="mx-auto max-w-[1500px]">
+        <header
+          id="dashboard-section"
+          className="dashboard-card mb-5 scroll-mt-20 rounded-3xl p-4 lg:p-5"
+        >
+          <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                Dashboard
+              </p>
+              <div className="mt-1.5 flex flex-col gap-2.5">
+                <h1 className="text-[1.7rem] font-semibold tracking-tight text-slate-950 lg:text-[1.78rem]">
+                  ESG Disclosure Analyzer
+                </h1>
+                <div className="flex flex-wrap gap-2.5">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-sm">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                      Report
+                    </span>
+                    <span className="max-w-[280px] truncate font-medium text-slate-700">
+                      {analysis
+                        ? analysis.report_name
+                        : selectedFile?.name || "No analyzed report"}
+                    </span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-sm">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                      Claims
+                    </span>
+                    <span className="font-medium text-slate-700">
+                      {analysis
+                        ? `${analysis.claims.length} extracted`
+                        : "Ready for analysis"}
+                    </span>
+                  </div>
+                  {(analysis?.metrics.disclosure_quality_score !== undefined ||
+                    analysis?.metrics.esg_coverage !== undefined) && (
+                    <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/90 px-3 py-2 text-xs shadow-sm">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-500">
+                        Snapshot
+                      </span>
+                      <span className="font-medium text-blue-800">
+                        {analysis?.metrics.disclosure_quality_score !== undefined
+                          ? `Quality ${analysis.metrics.disclosure_quality_score}/100`
+                          : ""}
+                        {analysis?.metrics.disclosure_quality_score !== undefined &&
+                        analysis?.metrics.esg_coverage !== undefined
+                          ? " · "
+                          : ""}
+                        {analysis?.metrics.esg_coverage !== undefined
+                          ? `Coverage ${analysis.metrics.esg_coverage}%`
+                          : ""}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                Analyze sustainability reports, identify measurable ESG claims, and
+                ask AI questions about disclosures.
+              </p>
+            </div>
 
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-
-        <div className="grid grid-cols-12 gap-6">
-          {/* Left panel */}
-          <div className="col-span-8 space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                Upload ESG Report
-              </h2>
-
+            <div className="flex flex-col gap-2.5 xl:min-w-[400px] xl:max-w-[450px] xl:items-end">
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".pdf"
-                className="w-full rounded-lg border border-slate-300 p-2"
+                className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0] || null;
                   setSelectedFile(file);
                 }}
               />
-
-              <div className="mt-4 flex gap-3">
+              <div className="flex w-full flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-end">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  {selectedFile ? "Replace PDF" : "Upload PDF"}
+                </button>
                 <button
                   onClick={handleAnalyze}
                   disabled={analyzeLoading}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {analyzeLoading ? "Analyzing..." : "Analyze Report"}
                 </button>
-
                 <button
                   onClick={handleReset}
-                  className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50"
+                  className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
                 >
                   Reset
                 </button>
               </div>
-
-              {selectedFile && (
-                <p className="mt-3 text-sm text-slate-500">
-                  Selected file:{" "}
-                  <span className="font-medium text-slate-700">
-                    {selectedFile.name}
+              <div className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-600 xl:max-w-[450px]">
+                {selectedFile ? (
+                  <span>
+                    Selected file:{" "}
+                    <span className="font-medium text-slate-800">
+                      {selectedFile.name}
+                    </span>
                   </span>
-                </p>
-              )}
+                ) : (
+                  "Upload a PDF to run analysis."
+                )}
+              </div>
             </div>
+          </div>
+        </header>
 
-            <div className="grid grid-cols-4 gap-4">
+        {error && (
+          <div className="mb-4 rounded-2xl border border-red-200 bg-red-50/90 px-4 py-2.5 text-sm text-red-700 shadow-sm">
+            {error}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-12 xl:items-start">
+          <div className="space-y-4 xl:col-span-8">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <ScoreCard
                 title="ESG Sentences"
                 value={
@@ -419,148 +477,219 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">
+            <section className="space-y-3.5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    Analytics
+                  </p>
+                  <h2 className="mt-1 text-base font-semibold text-slate-950">
+                    Disclosure Overview
+                  </h2>
+                </div>
+                <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-medium text-slate-500 shadow-sm">
+                  5 visual summaries
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-6">
+                <div className="dashboard-card rounded-3xl p-4 lg:col-span-3">
+                  <h2 className="mb-4 text-base font-semibold text-slate-950">
                   ESG Category Breakdown
-                </h2>
-                {analysis ? (
-                  <ESGCategoryChart
-                    data={categoryChartData}
-                    onBarClick={(category) => setSelectedCategory(category)}
-                  />
-                ) : (
-                  <p className="text-sm text-slate-500">No chart data yet.</p>
-                )}
-              </div>
+                  </h2>
+                  {analysis ? (
+                    <ESGCategoryChart
+                      data={categoryChartData}
+                      onBarClick={(category) => setSelectedCategory(category)}
+                    />
+                  ) : (
+                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                  )}
+                </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">
+                <div className="dashboard-card rounded-3xl p-4 lg:col-span-3">
+                  <h2 className="mb-4 text-base font-semibold text-slate-950">
                   Claim Type Breakdown
-                </h2>
-                {analysis ? (
-                  <ESGCategoryChart data={claimTypeChartData} />
-                ) : (
-                  <p className="text-sm text-slate-500">No chart data yet.</p>
-                )}
-              </div>
+                  </h2>
+                  {analysis ? (
+                    <ESGCategoryChart data={claimTypeChartData} />
+                  ) : (
+                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                  )}
+                </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">
+                <div className="dashboard-card rounded-3xl p-4 lg:col-span-4">
+                  <h2 className="mb-4 text-base font-semibold text-slate-950">
                   Claim Quality by ESG Category
-                </h2>
-                {analysis ? (
-                  <ClaimQualityByCategoryChart data={stackedCategoryData} />
-                ) : (
-                  <p className="text-sm text-slate-500">No chart data yet.</p>
-                )}
-              </div>
+                  </h2>
+                  {analysis ? (
+                    <ClaimQualityByCategoryChart data={stackedCategoryData} />
+                  ) : (
+                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                  )}
+                </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold text-slate-900">
+                <div className="dashboard-card rounded-3xl p-4 lg:col-span-2">
+                  <h2 className="mb-4 text-base font-semibold text-slate-950">
+                    ESG Coverage
+                  </h2>
+                  {analysis ? (
+                    <CoverageDonutChart
+                      data={analysis?.chart_data?.coverage_breakdown ?? []}
+                    />
+                  ) : (
+                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                  )}
+                </div>
+
+                <div className="dashboard-card rounded-3xl p-4 lg:col-span-6">
+                  <h2 className="mb-4 text-base font-semibold text-slate-950">
                   Page-Level ESG Density
-                </h2>
-                {analysis ? (
-                  <PageDensityChart data={analysis?.chart_data?.page_density ?? []} />
-                ) : (
-                  <p className="text-sm text-slate-500">No chart data yet.</p>
-                )}
+                  </h2>
+                  {analysis ? (
+                    <PageDensityChart data={analysis?.chart_data?.page_density ?? []} />
+                  ) : (
+                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                  )}
+                </div>
               </div>
-            </div>
+            </section>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                ESG Coverage
-              </h2>
-              {analysis ? (
-                <CoverageDonutChart
-                  data={analysis?.chart_data?.coverage_breakdown ?? []}
-                />
-              ) : (
-                <p className="text-sm text-slate-500">No chart data yet.</p>
-              )}
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
+            <div
+              id="claims-section"
+              className="dashboard-card scroll-mt-20 rounded-3xl p-4 lg:p-5"
+            >
+              <div id="pages-section" className="scroll-mt-20" />
+              <h2 className="mb-3 text-base font-semibold text-slate-950">
                 Report Details
               </h2>
               <TabPanel tabs={lowerContentTabs} />
             </div>
           </div>
 
-          {/* Right AI panel */}
-          <div className="col-span-4">
-            <div className="sticky top-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                AI ESG Assistant
-              </h2>
-
-              <div className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-                {analysis
-                  ? `Analyzed report: ${analysis.report_name}`
-                  : "Analyze a report first, then ask questions about its ESG disclosures."}
+          <div id="assistant-section" className="scroll-mt-20 xl:col-span-4">
+            <div className="dashboard-card sticky top-4 rounded-[28px] p-4">
+              <div className="mb-3 flex items-start justify-between gap-3 border-b border-slate-200/80 pb-3.5">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                    Assistant
+                  </p>
+                  <h2 className="mt-1 text-lg font-semibold tracking-tight text-slate-950">
+                    AI ESG Assistant
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Ask focused questions and review evidence-backed answers.
+                  </p>
+                </div>
+                <div className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700">
+                  Live context
+                </div>
               </div>
 
-              <div className="mb-3 space-y-2">
-                <button
-                  onClick={() =>
-                    setQuestion("What are the main environmental goals?")
-                  }
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                >
-                  What are the main environmental goals?
-                </button>
-                <button
-                  onClick={() =>
-                    setQuestion("Why did this report get this score?")
-                  }
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                >
-                  Why did this report get this score?
-                </button>
-                <button
-                  onClick={() => setQuestion("Find vague claims in this report.")}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                >
-                  Find vague claims in this report.
-                </button>
+              <div className="mb-3 rounded-3xl border border-slate-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(248,250,252,0.92))] p-3.5 shadow-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  Active report
+                </p>
+                <p className="mt-2 text-sm font-medium text-slate-800">
+                  {analysis ? analysis.report_name : "No report analyzed yet"}
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {analysis
+                    ? "Questions use the current ESG analysis and extracted evidence."
+                    : "Analyze a report first, then ask questions about its ESG disclosures."}
+                </p>
               </div>
 
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                rows={4}
-                placeholder="Ask about this report..."
-                className="mb-3 w-full rounded-lg border border-slate-300 p-3 text-sm outline-none focus:border-blue-500"
-              />
+              <div className="mb-3">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  Suggested prompts
+                </p>
+                <div className="grid grid-cols-1 gap-2">
+                  <button
+                    onClick={() =>
+                      setQuestion("What are the main environmental goals?")
+                    }
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
+                  >
+                    What are the main environmental goals?
+                  </button>
+                  <button
+                    onClick={() =>
+                      setQuestion("Why did this report get this score?")
+                    }
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
+                  >
+                    Why did this report get this score?
+                  </button>
+                  <button
+                    onClick={() => setQuestion("Find vague claims in this report.")}
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
+                  >
+                    Find vague claims in this report.
+                  </button>
+                </div>
+              </div>
 
-              <button
-                onClick={handleAsk}
-                disabled={askLoading}
-                className="mb-4 w-full rounded-lg bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {askLoading ? "Thinking..." : "Ask"}
-              </button>
+              <div className="mb-3 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
+                <textarea
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  rows={4}
+                  placeholder="Ask about this report..."
+                  className="mb-3 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/60 p-3 text-sm outline-none transition focus:border-blue-500"
+                />
 
-              <div className="max-h-[520px] overflow-auto space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-slate-500">
+                    Answers include supporting report evidence.
+                  </p>
+                  <button
+                    onClick={handleAsk}
+                    disabled={askLoading}
+                    className="rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {askLoading ? "Thinking..." : "Ask"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="max-h-[500px] overflow-auto space-y-3.5">
                 {!askResponse ? (
-                  <div className="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500">
-                    Ask a question to get an answer with supporting ESG
-                    evidence.
+                  <div className="rounded-3xl border border-dashed border-slate-300 bg-white/60 p-5 text-sm text-slate-500">
+                    <p className="font-medium text-slate-700">No response yet</p>
+                    <p className="mt-1">
+                      Ask a question to get an answer with supporting ESG
+                      evidence.
+                    </p>
                   </div>
                 ) : (
                   <>
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                    <div className="rounded-3xl border border-slate-200 bg-[linear-gradient(180deg,rgba(248,250,252,0.95),rgba(255,255,255,0.92))] p-4 shadow-sm">
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                          Response
+                        </p>
+                        <div className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500">
+                          AI summary
+                        </div>
+                      </div>
                       <p className="mb-2 text-sm font-semibold text-slate-900">
                         Answer
                       </p>
-                      <p className="whitespace-pre-line text-sm text-slate-700">
+                      <p className="whitespace-pre-line text-sm leading-6 text-slate-700">
                         {askResponse.answer}
                       </p>
                     </div>
 
                     <div>
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                          Supporting context
+                        </p>
+                        <div className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500">
+                          {askResponse.evidence.length} evidence items
+                        </div>
+                      </div>
                       <p className="mb-2 text-sm font-semibold text-slate-900">
                         Evidence
                       </p>
@@ -568,16 +697,27 @@ export default function HomePage() {
                         {askResponse.evidence.map((item, index) => (
                           <div
                             key={`${item.page}-${index}`}
-                            className="rounded-lg border border-slate-200 p-3"
+                            className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm"
                           >
-                            <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+                            <p className="hidden">
                               Page {item.page} · {item.category} ·{" "}
                               {item.claim_type}
                             </p>
-                            <p className="text-sm text-slate-700">
+                            <div className="mb-3 flex flex-wrap gap-2">
+                              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                                Page {item.page}
+                              </span>
+                              <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-700">
+                                {item.category}
+                              </span>
+                              <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-700">
+                                {item.claim_type}
+                              </span>
+                            </div>
+                            <p className="text-sm leading-6 text-slate-700">
                               {item.sentence}
                             </p>
-                            <p className="mt-2 text-xs text-slate-500">
+                            <p className="mt-3 rounded-2xl bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-500">
                               {item.reason}
                             </p>
                           </div>
@@ -603,9 +743,19 @@ function ScoreCard({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-sm text-slate-500">{title}</p>
-      <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
+    <div className="dashboard-card rounded-3xl px-4 py-4 sm:px-5 sm:py-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="space-y-3">
+          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-slate-400">
+            {title}
+          </p>
+          <p className="text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-[2.1rem]">
+            {value}
+          </p>
+        </div>
+        <div className="mt-0.5 h-2.5 w-2.5 rounded-full bg-slate-300/80" />
+      </div>
+      <div className="mt-5 h-px w-full bg-slate-200/80" />
     </div>
   );
 }

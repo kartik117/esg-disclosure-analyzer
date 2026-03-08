@@ -24,7 +24,7 @@ const COLORS = ["#2563eb", "#cbd5e1"];
 
 export default function CoverageDonutChart({ data }: Props) {
   return (
-    <div style={{ height: 320 }}>
+    <div style={{ height: 300 }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

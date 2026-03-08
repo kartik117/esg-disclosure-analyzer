@@ -23,7 +23,7 @@ type Props = {
 
 export default function ClaimQualityByCategoryChart({ data }: Props) {
   return (
-    <div style={{ height: 320 }}>
+    <div style={{ height: 300 }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="category" />
