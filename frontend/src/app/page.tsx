@@ -330,7 +330,7 @@ export default function HomePage() {
       <div className="mx-auto max-w-[1500px]">
         <header
           id="dashboard-section"
-          className="dashboard-card mb-5 scroll-mt-20 rounded-3xl p-4 lg:p-5"
+          className="dashboard-card section-tile mb-5 scroll-mt-20 rounded-3xl p-4 lg:p-5"
         >
           <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0">
@@ -446,42 +446,57 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-12 xl:items-start">
           <div className="space-y-4 xl:col-span-8">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <ScoreCard
-                title="ESG Sentences"
-                value={
-                  analysis ? String(analysis.metrics.total_esg_sentences) : "--"
-                }
-              />
-              <ScoreCard
-                title="Measurability Score"
-                value={
-                  analysis
-                    ? `${analysis.metrics.measurability_score}%`
-                    : "--"
-                }
-              />
-              <ScoreCard
-                title="Vagueness Risk"
-                value={
-                  analysis ? `${analysis.metrics.vagueness_risk}%` : "--"
-                }
-              />
-              <ScoreCard
-                title="Disclosure Quality"
-                value={
-                  analysis
-                    ? `${analysis.metrics.disclosure_quality_score}/100`
-                    : "--"
-                }
-              />
-            </div>
-
-            <section className="space-y-3.5">
+            <section className="dashboard-card section-tile space-y-3.5 rounded-3xl p-4 lg:p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    Analytics
+                    KPI Section
+                  </p>
+                  <h2 className="mt-1 text-base font-semibold text-slate-950">
+                    Core Metrics
+                  </h2>
+                </div>
+                <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-medium text-slate-500 shadow-sm">
+                  4 headline metrics
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                <ScoreCard
+                  title="ESG Sentences"
+                  value={
+                    analysis ? String(analysis.metrics.total_esg_sentences) : "--"
+                  }
+                />
+                <ScoreCard
+                  title="Measurability Score"
+                  value={
+                    analysis
+                      ? `${analysis.metrics.measurability_score}%`
+                      : "--"
+                  }
+                />
+                <ScoreCard
+                  title="Vagueness Risk"
+                  value={
+                    analysis ? `${analysis.metrics.vagueness_risk}%` : "--"
+                  }
+                />
+                <ScoreCard
+                  title="Disclosure Quality"
+                  value={
+                    analysis
+                      ? `${analysis.metrics.disclosure_quality_score}/100`
+                      : "--"
+                  }
+                />
+              </div>
+            </section>
+
+            <section className="dashboard-card section-tile space-y-3.5 rounded-3xl p-4 lg:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    Chart Section
                   </p>
                   <h2 className="mt-1 text-base font-semibold text-slate-950">
                     Disclosure Overview
@@ -493,9 +508,9 @@ export default function HomePage() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-6">
-                <div className="dashboard-card rounded-3xl p-4 lg:col-span-3">
-                  <h2 className="mb-4 text-base font-semibold text-slate-950">
-                  ESG Category Breakdown
+                <div className="dashboard-card chart-tile rounded-3xl p-4 lg:col-span-3">
+                  <h2 className="mb-3 text-base font-semibold text-slate-950">
+                    ESG Category Breakdown
                   </h2>
                   {analysis ? (
                     <ESGCategoryChart
@@ -507,9 +522,9 @@ export default function HomePage() {
                   )}
                 </div>
 
-                <div className="dashboard-card rounded-3xl p-4 lg:col-span-3">
-                  <h2 className="mb-4 text-base font-semibold text-slate-950">
-                  Claim Type Breakdown
+                <div className="dashboard-card chart-tile rounded-3xl p-4 lg:col-span-3">
+                  <h2 className="mb-3 text-base font-semibold text-slate-950">
+                    Claim Type Breakdown
                   </h2>
                   {analysis ? (
                     <ESGCategoryChart data={claimTypeChartData} />
@@ -518,9 +533,9 @@ export default function HomePage() {
                   )}
                 </div>
 
-                <div className="dashboard-card rounded-3xl p-4 lg:col-span-4">
-                  <h2 className="mb-4 text-base font-semibold text-slate-950">
-                  Claim Quality by ESG Category
+                <div className="dashboard-card chart-tile rounded-3xl p-4 lg:col-span-4">
+                  <h2 className="mb-3 text-base font-semibold text-slate-950">
+                    Claim Quality by ESG Category
                   </h2>
                   {analysis ? (
                     <ClaimQualityByCategoryChart data={stackedCategoryData} />
@@ -529,8 +544,8 @@ export default function HomePage() {
                   )}
                 </div>
 
-                <div className="dashboard-card rounded-3xl p-4 lg:col-span-2">
-                  <h2 className="mb-4 text-base font-semibold text-slate-950">
+                <div className="dashboard-card chart-tile rounded-3xl p-4 lg:col-span-2">
+                  <h2 className="mb-3 text-base font-semibold text-slate-950">
                     ESG Coverage
                   </h2>
                   {analysis ? (
@@ -542,9 +557,9 @@ export default function HomePage() {
                   )}
                 </div>
 
-                <div className="dashboard-card rounded-3xl p-4 lg:col-span-6">
-                  <h2 className="mb-4 text-base font-semibold text-slate-950">
-                  Page-Level ESG Density
+                <div className="dashboard-card chart-tile rounded-3xl p-4 lg:col-span-6">
+                  <h2 className="mb-3 text-base font-semibold text-slate-950">
+                    Page-Level ESG Density
                   </h2>
                   {analysis ? (
                     <PageDensityChart data={analysis?.chart_data?.page_density ?? []} />
@@ -557,7 +572,7 @@ export default function HomePage() {
 
             <div
               id="claims-section"
-              className="dashboard-card scroll-mt-20 rounded-3xl p-4 lg:p-5"
+              className="dashboard-card section-tile scroll-mt-20 rounded-3xl p-4 lg:p-5"
             >
               <div id="pages-section" className="scroll-mt-20" />
               <h2 className="mb-3 text-base font-semibold text-slate-950">
@@ -568,7 +583,7 @@ export default function HomePage() {
           </div>
 
           <div id="assistant-section" className="scroll-mt-20 xl:col-span-4">
-            <div className="dashboard-card sticky top-4 rounded-[28px] p-4">
+            <div className="dashboard-card assistant-tile sticky top-4 rounded-[28px] p-4">
               <div className="mb-3 flex items-start justify-between gap-3 border-b border-slate-200/80 pb-3.5">
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500">

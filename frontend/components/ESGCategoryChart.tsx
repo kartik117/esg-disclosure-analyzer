@@ -25,7 +25,7 @@ export default function ESGCategoryChart({
   onBarClick,
 }: ESGCategoryChartProps) {
   return (
-    <div style={{ height: 276 }}>
+    <div style={{ height: 248 }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <XAxis dataKey="category" />
