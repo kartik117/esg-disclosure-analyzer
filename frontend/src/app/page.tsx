@@ -5,6 +5,7 @@ import ESGCategoryChart from "../../components/ESGCategoryChart";
 import ClaimQualityByCategoryChart from "../../components/ClaimQualityByCategoryChart";
 import PageDensityChart from "../../components/PageDensityChart";
 import CoverageDonutChart from "../../components/CoverageDonutChart";
+import TabPanel from "../../components/TabPanel";
 
 type Metrics = {
   total_esg_sentences: number;
@@ -138,6 +139,105 @@ export default function HomePage() {
 
   return Object.values(grouped);
 }, [analysis]);
+
+  const lowerContentTabs = [
+    {
+      label: "Claims Table",
+      content: (
+        <>
+          {selectedCategory && (
+            <div className="mb-3 text-sm text-slate-600">
+              Showing {filteredClaims?.length} claims for:{" "}
+              <span className="font-semibold">{selectedCategory}</span>
+              <button
+                className="ml-3 text-blue-600 hover:underline"
+                onClick={() => setSelectedCategory(null)}
+              >
+                Clear
+              </button>
+            </div>
+          )}
+
+          {!analysis ? (
+            <p className="text-sm text-slate-500">
+              Analyze a report to see ESG claims.
+            </p>
+          ) : (
+            <div className="max-h-[420px] overflow-auto rounded-lg border border-slate-200">
+              <table className="min-w-full text-sm">
+                <thead className="sticky top-0 bg-slate-100 text-left text-slate-700">
+                  <tr>
+                    <th className="px-3 py-2">Page</th>
+                    <th className="px-3 py-2">Category</th>
+                    <th className="px-3 py-2">Claim Type</th>
+                    <th className="px-3 py-2">Sentence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredClaims?.slice(0, 100).map((claim, index) => (
+                    <tr
+                      key={`${claim.page}-${index}`}
+                      className="border-t border-slate-200 align-top"
+                    >
+                      <td className="px-3 py-2">{claim.page}</td>
+                      <td className="px-3 py-2">{claim.category}</td>
+                      <td className="px-3 py-2">{claim.claim_type}</td>
+                      <td className="px-3 py-2 text-slate-700">
+                        {claim.sentence}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      ),
+    },
+    {
+      label: "Top ESG Keywords",
+      content: !analysis ? (
+        <p className="text-sm text-slate-500">
+          Analyze a report to see top ESG keywords.
+        </p>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {analysis.claims.slice(0, 20).map((c, i) => (
+            <span
+              key={i}
+              className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs text-blue-700"
+            >
+              {c.matched_keywords}
+            </span>
+          ))}
+        </div>
+      ),
+    },
+    {
+      label: "Page Preview",
+      content: !analysis ? (
+        <p className="text-sm text-slate-500">
+          Analyze a report to preview extracted pages.
+        </p>
+      ) : (
+        <div className="space-y-4">
+          {analysis.page_preview.map((page) => (
+            <div
+              key={page.page}
+              className="rounded-lg border border-slate-200 p-4"
+            >
+              <p className="mb-2 text-sm font-medium text-slate-800">
+                Page {page.page}
+              </p>
+              <p className="text-sm text-slate-600">
+                {page.text.slice(0, 500)}...
+              </p>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ];
 
   async function handleAnalyze() {
     if (!selectedFile) {
@@ -383,100 +483,9 @@ export default function HomePage() {
 
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                Top ESG Keywords
+                Report Details
               </h2>
-
-              <div className="flex flex-wrap gap-2">
-                {analysis?.claims.slice(0, 20).map((c, i) => (
-                  <span
-                    key={i}
-                    className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs text-blue-700"
-                  >
-                    {c.matched_keywords}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                Claims Table
-              </h2>
-
-              {selectedCategory && (
-                <div className="mb-3 text-sm text-slate-600">
-                  Showing {filteredClaims?.length} claims for:{" "}
-                  <span className="font-semibold">{selectedCategory}</span>
-                  <button
-                    className="ml-3 text-blue-600 hover:underline"
-                    onClick={() => setSelectedCategory(null)}
-                  >
-                    Clear
-                  </button>
-                </div>
-              )}
-
-              {!analysis ? (
-                <p className="text-sm text-slate-500">
-                  Analyze a report to see ESG claims.
-                </p>
-              ) : (
-                <div className="max-h-[420px] overflow-auto rounded-lg border border-slate-200">
-                  <table className="min-w-full text-sm">
-                    <thead className="sticky top-0 bg-slate-100 text-left text-slate-700">
-                      <tr>
-                        <th className="px-3 py-2">Page</th>
-                        <th className="px-3 py-2">Category</th>
-                        <th className="px-3 py-2">Claim Type</th>
-                        <th className="px-3 py-2">Sentence</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredClaims?.slice(0, 100).map((claim, index) => (
-                        <tr
-                          key={`${claim.page}-${index}`}
-                          className="border-t border-slate-200 align-top"
-                        >
-                          <td className="px-3 py-2">{claim.page}</td>
-                          <td className="px-3 py-2">{claim.category}</td>
-                          <td className="px-3 py-2">{claim.claim_type}</td>
-                          <td className="px-3 py-2 text-slate-700">
-                            {claim.sentence}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                Page Preview
-              </h2>
-
-              {!analysis ? (
-                <p className="text-sm text-slate-500">
-                  Analyze a report to preview extracted pages.
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {analysis.page_preview.map((page) => (
-                    <div
-                      key={page.page}
-                      className="rounded-lg border border-slate-200 p-4"
-                    >
-                      <p className="mb-2 text-sm font-medium text-slate-800">
-                        Page {page.page}
-                      </p>
-                      <p className="text-sm text-slate-600">
-                        {page.text.slice(0, 500)}...
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <TabPanel tabs={lowerContentTabs} />
             </div>
           </div>
 

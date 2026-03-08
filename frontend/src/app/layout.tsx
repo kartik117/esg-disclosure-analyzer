@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Sidebar from "../../components/Sidebar";
+import TopBar from "../../components/TopBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +26,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
+        <div className="flex min-h-screen">
+          {/* Sidebar */}
+          <div className="z-30">
+            <Sidebar />
+          </div>
+          {/* Main content area */}
+          <div className="flex-1 flex flex-col min-h-screen ml-20 relative">
+            {/* TopBar */}
+            <TopBar />
+            {/* Main children content */}
+            <main className="flex flex-row flex-1">
+              <div className="flex-1 px-8 py-6">
+                {children}
+              </div>
+              {/* Sticky AI Assistant rail */}
+              <aside className="sticky top-6 right-0 w-96 max-w-full h-fit z-20 ml-8">
+                {/* AI Assistant will be rendered here by page.tsx */}
+              </aside>
+            </main>
+          </div>
+        </div>
       </body>
     </html>
   );
