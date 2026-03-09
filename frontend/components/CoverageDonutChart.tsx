@@ -20,19 +20,19 @@ type Props = {
   data: Item[];
 };
 
-const COLORS = ["#2563eb", "#cbd5e1"];
+const COLORS = ["#38bdf8", "#334155"];
 
 export default function CoverageDonutChart({ data }: Props) {
   return (
-    <div style={{ height: 252 }}>
+    <div style={{ height: 172 }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data}
             dataKey="value"
             nameKey="name"
-            innerRadius={70}
-            outerRadius={110}
+            innerRadius={42}
+            outerRadius={68}
             paddingAngle={3}
           >
             {data.map((_, index) => (
@@ -41,11 +41,18 @@ export default function CoverageDonutChart({ data }: Props) {
              <Label
                 value="ESG Coverage"
                 position="center"
-                style={{ fontSize: 14, fontWeight: 600 }}
+                style={{ fontSize: 12, fontWeight: 600, fill: "#cbd5e1" }}
             />
           </Pie>
-          <Tooltip />
-          <Legend />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#111827",
+              borderColor: "#334155",
+              borderRadius: 14,
+              color: "#e2e8f0",
+            }}
+          />
+          <Legend wrapperStyle={{ color: "#cbd5e1", fontSize: "12px" }} />
         </PieChart>
       </ResponsiveContainer>
     </div>

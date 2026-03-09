@@ -25,13 +25,20 @@ export default function ESGCategoryChart({
   onBarClick,
 }: ESGCategoryChartProps) {
   return (
-    <div style={{ height: 248 }}>
+    <div style={{ height: 184 }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
-          <XAxis dataKey="category" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="count" fill="#2563eb">
+        <BarChart data={data} margin={{ top: 4, right: 6, left: -20, bottom: -2 }}>
+          <XAxis dataKey="category" tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} tickLine={false} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#111827",
+              borderColor: "#334155",
+              borderRadius: 14,
+              color: "#e2e8f0",
+            }}
+          />
+          <Bar dataKey="count" fill="#38bdf8">
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
