@@ -64,7 +64,8 @@ type AskResponse = {
 };
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_BASE_URL?.trim() ||
+  (process.env.NODE_ENV !== "production" ? "http://localhost:8000" : "");
 const EXPORT_BACKGROUND_COLOR = "#0b1320";
 const MAX_EXPORT_CANVAS_EDGE = 4096;
 const MAX_EXPORT_CANVAS_AREA = 12000000;
@@ -297,6 +298,11 @@ export default function HomePage() {
   }
 
   async function handleAnalyze() {
+    if (!API_BASE) {
+      setError("Backend API is not configured. Set NEXT_PUBLIC_API_BASE_URL.");
+      return;
+    }
+
     if (!selectedFile) {
       setError("Please choose a PDF file first.");
       return;
@@ -332,6 +338,11 @@ export default function HomePage() {
   }
 
   async function handleAsk() {
+    if (!API_BASE) {
+      setError("Backend API is not configured. Set NEXT_PUBLIC_API_BASE_URL.");
+      return;
+    }
+
     if (!question.trim()) {
       setError("Please enter a question.");
       return;

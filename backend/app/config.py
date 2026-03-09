@@ -40,6 +40,7 @@ _load_backend_env_file()
 
 @dataclass(frozen=True)
 class Settings:
+    cors_allow_origins: tuple[str, ...]
     llm_enabled: bool
     llm_provider: str
     llm_model: str
@@ -71,9 +72,29 @@ def _get_int(name: str, default: int) -> int:
         return default
 
 
+def _get_list(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    items = tuple(
+        item.strip()
+        for item in value.split(",")
+        if item.strip()
+    )
+    return items or default
+
+
 @lru_cache
 def get_settings() -> Settings:
     return Settings(
+        cors_allow_origins=_get_list(
+            "CORS_ALLOW_ORIGINS",
+            (
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+            ),
+        ),
         llm_enabled=_get_bool("LLM_ENABLED", False),
         llm_provider=os.getenv("LLM_PROVIDER", "gemini").strip().lower(),
         llm_model=os.getenv("LLM_MODEL", "gemini-2.5-flash").strip(),
