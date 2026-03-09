@@ -896,11 +896,11 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 gap-2">
                   <button
                     onClick={() =>
-                      setQuestion("What are the main environmental goals?")
+                      setQuestion("Summarize this company\u2019s ESG strategy.")
                     }
                     className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
                   >
-                    What are the main environmental goals?
+                    Summarize this company&apos;s ESG strategy
                   </button>
                   <button
                     onClick={() =>
@@ -911,10 +911,22 @@ export default function HomePage() {
                     Why did this report get this score?
                   </button>
                   <button
-                    onClick={() => setQuestion("Find vague claims in this report.")}
+                    onClick={() => setQuestion("Find potential greenwashing language in this report.")}
                     className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
                   >
-                    Find vague claims in this report.
+                    Find potential greenwashing language
+                  </button>
+                  <button
+                    onClick={() => setQuestion("What is missing from this report?")}
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                  >
+                    What is missing from this report?
+                  </button>
+                  <button
+                    onClick={() => setQuestion("Rewrite vague claims into measurable ones.")}
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                  >
+                    Rewrite vague claims into measurable ones
                   </button>
                 </div>
               </div>

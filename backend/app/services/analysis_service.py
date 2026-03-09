@@ -2,13 +2,20 @@ from src.pdf_parser import extract_text_from_pdf
 from src.preprocessing import clean_text, split_into_sentences
 from src.esg_classifier import classify_esg_category
 from src.claim_scoring import classify_claim_type
-from src.retrieval import load_embedding_model, build_faiss_index, retrieve_top_k
 from src.summarizer import generate_qa_response
+from app.services.llm_service import (
+    LLMConfigurationError,
+    LLMProviderError,
+    LLMResponseError,
+    get_llm_service,
+)
+from app.services.rag_context_service import build_rag_context
 
 # In-memory store for latest analyzed claims
 LATEST_ANALYSIS = {
     "report_name": None,
     "claims": [],
+    "metrics": None,
 }
 
 
@@ -93,6 +100,7 @@ def analyze_document(file_path: str, report_name: str = None):
 
         LATEST_ANALYSIS["report_name"] = report_name
         LATEST_ANALYSIS["claims"] = []
+        LATEST_ANALYSIS["metrics"] = metrics
 
         return {
             "pages": pages,
@@ -143,6 +151,7 @@ def analyze_document(file_path: str, report_name: str = None):
     # Store latest analysis in memory
     LATEST_ANALYSIS["report_name"] = report_name
     LATEST_ANALYSIS["claims"] = records
+    LATEST_ANALYSIS["metrics"] = metrics
 
     return {
         "pages": pages,
@@ -154,35 +163,84 @@ def analyze_document(file_path: str, report_name: str = None):
 
 def ask_about_latest_analysis(question: str):
     claims = LATEST_ANALYSIS["claims"]
+    metrics = LATEST_ANALYSIS["metrics"]
 
     if not claims:
         raise ValueError("No analyzed report is available. Please analyze a PDF first.")
 
-    retrieval_sentences = [claim["sentence"] for claim in claims]
-
-    model = load_embedding_model()
-    index, _ = build_faiss_index(retrieval_sentences, model)
-
-    top_results = retrieve_top_k(
-        query=question,
-        sentences=retrieval_sentences,
-        model=model,
-        index=index,
-        k=5
+    rag_context = build_rag_context(
+        question=question,
+        claims=claims,
+        report_name=LATEST_ANALYSIS["report_name"],
+        metrics=metrics,
     )
 
-    answer = generate_qa_response(question, top_results)
+    answer = None
+    used_fallback = False
 
-    evidence = []
-    for sentence in top_results:
-        for claim in claims:
-            if claim["sentence"] == sentence:
-                evidence.append(claim)
-                break
+    try:
+        llm_service = get_llm_service()
+        answer = llm_service.generate(
+            rag_context["user_prompt"],
+            system_prompt=rag_context["system_prompt"],
+            temperature=0.2,
+            max_tokens=None,
+        )
+    except (LLMConfigurationError, LLMProviderError, LLMResponseError) as exc:
+        used_fallback = True
+        if isinstance(exc, LLMConfigurationError):
+            answer = "LLM not configured. Please set GEMINI_API_KEY."
+
+    if not answer:
+        answer = _build_fallback_answer(question, rag_context["evidence"], used_fallback)
+        used_fallback = True
 
     return {
         "report_name": LATEST_ANALYSIS["report_name"],
         "question": question,
         "answer": answer,
-        "evidence": evidence
+        "evidence": rag_context["evidence"],
+        "metadata": _build_answer_metadata(
+            evidence=rag_context["evidence"],
+            used_fallback=used_fallback,
+        ),
+    }
+
+
+def _build_fallback_answer(
+    question: str,
+    evidence: list[dict],
+    llm_failed: bool,
+) -> str:
+    fallback_answer = generate_qa_response(
+        question,
+        [item["sentence"] for item in evidence],
+    )
+
+    if llm_failed:
+        return (
+            f"{fallback_answer}\n\n"
+            "(Fallback response used because the LLM was unavailable.)"
+        )
+
+    return fallback_answer
+
+
+def _build_answer_metadata(
+    *,
+    evidence: list[dict],
+    used_fallback: bool,
+) -> dict[str, str | int]:
+    evidence_count = len(evidence)
+    confidence_note = "Limited evidence retrieved."
+
+    if evidence_count >= 4:
+        confidence_note = "Broad evidence coverage across multiple retrieved claims."
+    elif evidence_count >= 2:
+        confidence_note = "Moderate evidence coverage from the analyzed report."
+
+    return {
+        "retrieved_source_count": evidence_count,
+        "answer_source": "fallback" if used_fallback else "llm",
+        "confidence_note": confidence_note,
     }
