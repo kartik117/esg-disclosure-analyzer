@@ -38,7 +38,7 @@ export default function ESGCategoryChart({
               color: "#e2e8f0",
             }}
           />
-          <Bar dataKey="count" fill="#38bdf8">
+          <Bar dataKey="count" fill="#2563eb">
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}

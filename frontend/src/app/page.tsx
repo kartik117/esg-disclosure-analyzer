@@ -153,11 +153,11 @@ export default function HomePage() {
       content: (
         <>
           {selectedCategory && (
-            <div className="mb-3 rounded-2xl border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200">
+            <div className="mb-3 rounded-2xl border border-indigo-100 bg-indigo-50/80 px-3 py-2 text-sm text-slate-800">
               Showing {filteredClaims?.length} claims for:{" "}
-              <span className="font-semibold text-slate-100">{selectedCategory}</span>
+              <span className="font-semibold text-slate-900">{selectedCategory}</span>
               <button
-                className="ml-3 text-sky-300 hover:underline"
+                className="ml-3 text-indigo-600 hover:underline"
                 onClick={() => setSelectedCategory(null)}
               >
                 Clear
@@ -166,13 +166,13 @@ export default function HomePage() {
           )}
 
           {!analysis ? (
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-slate-600">
               Analyze a report to see ESG claims.
             </p>
           ) : (
-            <div className="max-h-[420px] overflow-auto rounded-2xl border border-slate-700 bg-slate-950/65 shadow-inner">
-              <table className="min-w-full text-sm text-slate-200">
-                <thead className="sticky top-0 bg-slate-900 text-left text-slate-100 backdrop-blur">
+            <div className="max-h-[420px] overflow-auto rounded-2xl border border-slate-200 bg-white/85 shadow-inner">
+              <table className="min-w-full text-sm text-slate-700">
+                <thead className="sticky top-0 bg-slate-50 text-left text-slate-900 backdrop-blur">
                   <tr>
                     <th className="px-3 py-3 font-semibold">Page</th>
                     <th className="px-3 py-3 font-semibold">Category</th>
@@ -184,12 +184,12 @@ export default function HomePage() {
                   {filteredClaims?.slice(0, 100).map((claim, index) => (
                     <tr
                       key={`${claim.page}-${index}`}
-                      className="border-t border-slate-800 align-top odd:bg-slate-900/20 even:bg-slate-950/30"
+                      className="border-t border-slate-100 align-top odd:bg-slate-50/60 even:bg-white"
                     >
-                      <td className="px-3 py-3 text-slate-300">{claim.page}</td>
-                      <td className="px-3 py-3 font-medium text-slate-100">{claim.category}</td>
-                      <td className="px-3 py-3 text-slate-300">{claim.claim_type}</td>
-                      <td className="px-3 py-3 leading-6 text-slate-200">
+                      <td className="px-3 py-3 text-slate-600">{claim.page}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{claim.category}</td>
+                      <td className="px-3 py-3 text-slate-600">{claim.claim_type}</td>
+                      <td className="px-3 py-3 leading-6 text-slate-800">
                         {claim.sentence}
                       </td>
                     </tr>
@@ -204,7 +204,7 @@ export default function HomePage() {
     {
       label: "Top ESG Keywords",
       content: !analysis ? (
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-slate-600">
           Analyze a report to see top ESG keywords.
         </p>
       ) : (
@@ -212,7 +212,7 @@ export default function HomePage() {
           {analysis.claims.slice(0, 20).map((c, i) => (
             <span
               key={i}
-              className="rounded-full border border-sky-500/30 bg-sky-500/12 px-3 py-1 text-xs text-sky-200"
+              className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700"
             >
               {c.matched_keywords}
             </span>
@@ -223,7 +223,7 @@ export default function HomePage() {
     {
       label: "Page Preview",
       content: !analysis ? (
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-slate-600">
           Analyze a report to preview extracted pages.
         </p>
       ) : (
@@ -231,12 +231,12 @@ export default function HomePage() {
               {analysis.page_preview.map((page) => (
                 <div
                   key={page.page}
-                  className="rounded-2xl border border-slate-700 bg-slate-950/55 p-4"
+                  className="rounded-2xl border border-slate-200 bg-white/80 p-4"
                 >
-              <p className="mb-2 text-sm font-medium text-slate-100">
+              <p className="mb-2 text-sm font-medium text-slate-900">
                 Page {page.page}
               </p>
-              <p className="text-sm leading-6 text-slate-200">
+              <p className="text-sm leading-6 text-slate-700">
                 {page.text.slice(0, 500)}...
               </p>
             </div>
@@ -626,24 +626,24 @@ export default function HomePage() {
           />
 
           <div className="dashboard-card section-tile w-full rounded-3xl p-3 xl:col-span-6">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
               Dashboard
             </p>
-            <h1 className="mt-1 text-[1.55rem] font-semibold tracking-tight text-slate-50 lg:text-[1.72rem]">
+            <h1 className="mt-1 text-[1.55rem] font-semibold tracking-tight text-slate-950 lg:text-[1.72rem]">
               ESG Disclosure Analyzer
             </h1>
-            <div className="mt-2.5 inline-flex max-w-full rounded-2xl border border-slate-700/80 bg-slate-950/60 px-3 py-2 text-sm text-slate-300">
+            <div className="mt-2.5 inline-flex max-w-full rounded-2xl border border-slate-200 bg-white/80 px-3 py-2 text-sm text-slate-700">
               {selectedFile ? (
                 <span>
                   Selected file:{" "}
-                  <span className="font-medium text-slate-100">
+                  <span className="font-medium text-slate-900">
                     {selectedFile.name}
                   </span>
                 </span>
               ) : analysis ? (
                 <span>
                   Active report:{" "}
-                  <span className="font-medium text-slate-100">
+                  <span className="font-medium text-slate-900">
                     {analysis.report_name}
                   </span>
                 </span>
@@ -651,68 +651,68 @@ export default function HomePage() {
                 "Upload a PDF to run analysis."
               )}
             </div>
-            <p className="mt-2.5 max-w-3xl text-sm leading-6 text-slate-300">
+            <p className="mt-2.5 max-w-3xl text-sm leading-6 text-slate-700">
               Analyze sustainability reports, identify measurable ESG claims, and
               ask AI questions about disclosures.
             </p>
           </div>
 
-              <div className="dashboard-card flex h-full min-w-0 flex-col rounded-3xl border border-slate-700/80 bg-slate-950/55 p-2.5 shadow-sm xl:col-span-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+              <div className="dashboard-card flex h-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white/80 p-2.5 shadow-sm xl:col-span-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                   Actions
                 </p>
-                <p className="mt-1 text-[13px] leading-5 text-slate-300">
+                <p className="mt-1 text-[13px] leading-5 text-slate-700">
                   Manage the current report workflow.
                 </p>
 
                 <div className="mt-2.5 flex flex-wrap gap-1.5">
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-[12px] font-medium text-slate-100 transition hover:bg-slate-800"
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     {selectedFile ? "Replace PDF" : "Upload PDF"}
                   </button>
                   <button
                     onClick={handleAnalyze}
                     disabled={analyzeLoading}
-                    className="rounded-xl bg-sky-400 px-2.5 py-1.5 text-[12px] font-semibold text-slate-950 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-xl bg-[linear-gradient(135deg,#4f46e5,#4338ca)] px-2.5 py-1.5 text-[12px] font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {analyzeLoading ? "Analyzing..." : "Analyze Report"}
                   </button>
                   <button
                     onClick={handleReset}
-                    className="rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-[12px] font-medium text-slate-100 transition hover:bg-slate-800"
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Reset
                   </button>
                 </div>
               </div>
 
-              <div className="dashboard-card flex h-full min-w-0 flex-col rounded-3xl border border-slate-700/80 bg-slate-950/55 p-2.5 shadow-sm xl:col-span-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+              <div className="dashboard-card flex h-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white/80 p-2.5 shadow-sm xl:col-span-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                   Export
                 </p>
-                <p className="mt-1 text-[13px] leading-5 text-slate-300">
+                <p className="mt-1 text-[13px] leading-5 text-slate-700">
                   Download the latest dashboard output.
                 </p>
                 <div className="mt-2.5 flex flex-wrap gap-1.5">
                   <button
                     onClick={handleExportPdf}
                     disabled={!analysis}
-                    className="rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-[12px] font-medium text-slate-100 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50/80 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Export PDF
                   </button>
                   <button
                     onClick={handleExportCsv}
                     disabled={!analysis}
-                    className="rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-[12px] font-medium text-slate-100 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50/80 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Export CSV
                   </button>
                   <button
                     onClick={handleExportSnapshot}
-                    className="rounded-xl border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-[12px] font-medium text-slate-100 transition hover:bg-slate-800"
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Export Snapshot
                   </button>
@@ -728,21 +728,21 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 gap-3.5 xl:grid-cols-12 xl:items-start">
           <div className="space-y-4 xl:col-span-9">
-            <section className="dashboard-card section-tile space-y-3.5 rounded-3xl p-4 lg:p-5">
+            <section className="dashboard-card section-tile space-y-3 rounded-3xl p-4 lg:p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                     KPI Section
                   </p>
-                  <h2 className="mt-1 text-base font-semibold text-slate-50">
+                  <h2 className="mt-1 text-base font-semibold text-slate-900">
                     Core Metrics
                   </h2>
                 </div>
-                <div className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-400 shadow-sm">
+                <div className="rounded-full border border-violet-100 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
                   4 headline metrics
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <ScoreCard
                   title="ESG Sentences"
                   value={
@@ -777,21 +777,21 @@ export default function HomePage() {
             <section className="dashboard-card section-tile space-y-3.5 rounded-3xl p-4 lg:p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                     Chart Section
                   </p>
-                  <h2 className="mt-1 text-base font-semibold text-slate-50">
+                  <h2 className="mt-1 text-base font-semibold text-slate-900">
                     Disclosure Overview
                   </h2>
                 </div>
-                <div className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-400 shadow-sm">
+                <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
                   5 visual summaries
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-6">
                 <div className="dashboard-card chart-tile rounded-3xl p-3.5 lg:col-span-3">
-                  <h2 className="mb-3 text-base font-semibold text-slate-50">
+                  <h2 className="mb-3 text-base font-semibold text-slate-900">
                     ESG Category Breakdown
                   </h2>
                   {analysis ? (
@@ -800,34 +800,34 @@ export default function HomePage() {
                       onBarClick={(category) => setSelectedCategory(category)}
                     />
                   ) : (
-                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                    <p className="text-sm text-slate-600">No chart data yet.</p>
                   )}
                 </div>
 
                 <div className="dashboard-card chart-tile rounded-3xl p-3.5 lg:col-span-3">
-                  <h2 className="mb-3 text-base font-semibold text-slate-50">
+                  <h2 className="mb-3 text-base font-semibold text-slate-900">
                     Claim Type Breakdown
                   </h2>
                   {analysis ? (
                     <ESGCategoryChart data={claimTypeChartData} />
                   ) : (
-                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                    <p className="text-sm text-slate-600">No chart data yet.</p>
                   )}
                 </div>
 
                 <div className="dashboard-card chart-tile rounded-3xl p-3.5 lg:col-span-4">
-                  <h2 className="mb-3 text-base font-semibold text-slate-50">
+                  <h2 className="mb-3 text-base font-semibold text-slate-900">
                     Claim Quality by ESG Category
                   </h2>
                   {analysis ? (
                     <ClaimQualityByCategoryChart data={stackedCategoryData} />
                   ) : (
-                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                    <p className="text-sm text-slate-600">No chart data yet.</p>
                   )}
                 </div>
 
                 <div className="dashboard-card chart-tile rounded-3xl p-3.5 lg:col-span-2">
-                  <h2 className="mb-3 text-base font-semibold text-slate-50">
+                  <h2 className="mb-3 text-base font-semibold text-slate-900">
                     ESG Coverage
                   </h2>
                   {analysis ? (
@@ -835,12 +835,12 @@ export default function HomePage() {
                       data={analysis?.chart_data?.coverage_breakdown ?? []}
                     />
                   ) : (
-                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                    <p className="text-sm text-slate-600">No chart data yet.</p>
                   )}
                 </div>
 
                 <div className="dashboard-card chart-tile rounded-3xl p-3.5 lg:col-span-6">
-                  <h2 className="mb-3 text-base font-semibold text-slate-50">
+                  <h2 className="mb-3 text-base font-semibold text-slate-900">
                     Page-Level ESG Density
                   </h2>
                   {analysis ? (
@@ -848,7 +848,7 @@ export default function HomePage() {
                       data={analysis?.chart_data?.page_density ?? []}
                     />
                   ) : (
-                    <p className="text-sm text-slate-500">No chart data yet.</p>
+                    <p className="text-sm text-slate-600">No chart data yet.</p>
                   )}
                 </div>
               </div>
@@ -860,29 +860,29 @@ export default function HomePage() {
             <div className="dashboard-card assistant-tile sticky top-4 rounded-[28px] p-4">
               <div className="mb-3 flex items-start justify-between gap-3 border-b border-slate-200/80 pb-3.5">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-cyan-200/70">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-indigo-500/80">
                     Assistant
                   </p>
-                  <h2 className="mt-1 text-lg font-semibold tracking-tight text-slate-50">
+                  <h2 className="mt-1 text-lg font-semibold tracking-tight text-slate-900">
                     AI ESG Assistant
                   </h2>
-                  <p className="mt-1 text-sm text-slate-300">
+                  <p className="mt-1 text-sm text-slate-700">
                     Ask focused questions and review evidence-backed answers.
                   </p>
                 </div>
-                <div className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700">
-                  Live context
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-indigo-200 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.22),rgba(255,255,255,0.96)_72%)] text-lg shadow-[0_0_18px_rgba(99,102,241,0.28)]">
+                  🤖
                 </div>
               </div>
 
-              <div className="mb-3 rounded-3xl border border-slate-700/80 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(8,15,28,0.94))] p-3.5 shadow-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+              <div className="mb-3 rounded-3xl border border-indigo-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,247,255,0.95))] p-3.5 shadow-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-600">
                   Active report
                 </p>
-                <p className="mt-2 text-sm font-medium text-slate-100">
+                <p className="mt-2 text-sm font-medium text-slate-900">
                   {analysis ? analysis.report_name : "No report analyzed yet"}
                 </p>
-                <p className="mt-1 text-sm text-slate-300">
+                <p className="mt-1 text-sm text-slate-700">
                   {analysis
                     ? "Questions use the current ESG analysis and extracted evidence."
                     : "Analyze a report first, then ask questions about its ESG disclosures."}
@@ -890,7 +890,7 @@ export default function HomePage() {
               </div>
 
               <div className="mb-3">
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                   Suggested prompts
                 </p>
                 <div className="grid grid-cols-1 gap-2">
@@ -898,7 +898,7 @@ export default function HomePage() {
                     onClick={() =>
                       setQuestion("Summarize this company\u2019s ESG strategy.")
                     }
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Summarize this company&apos;s ESG strategy
                   </button>
@@ -906,42 +906,42 @@ export default function HomePage() {
                     onClick={() =>
                       setQuestion("Why did this report get this score?")
                     }
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Why did this report get this score?
                   </button>
                   <button
                     onClick={() => setQuestion("Find potential greenwashing language in this report.")}
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Find potential greenwashing language
                   </button>
                   <button
                     onClick={() => setQuestion("What is missing from this report?")}
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     What is missing from this report?
                   </button>
                   <button
                     onClick={() => setQuestion("Rewrite vague claims into measurable ones.")}
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/90 px-3 py-2.5 text-left text-sm font-medium text-slate-100 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-800"
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-left text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:bg-indigo-50/80"
                   >
                     Rewrite vague claims into measurable ones
                   </button>
                 </div>
               </div>
 
-              <div className="mb-3 rounded-3xl border border-slate-700 bg-slate-950/80 p-3 shadow-sm">
+              <div className="mb-3 rounded-3xl border border-slate-200 bg-white/85 p-3 shadow-sm">
                 <textarea
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   rows={4}
                   placeholder="Ask about this report..."
-                  className="mb-3 w-full resize-none rounded-2xl border border-slate-700 bg-slate-900/80 p-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400"
+                  className="mb-3 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/80 p-3 text-sm text-slate-900 outline-none transition focus:border-indigo-400"
                 />
 
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Answers include supporting report evidence.
                   </p>
                   <button
@@ -956,8 +956,8 @@ export default function HomePage() {
 
               <div className="max-h-[500px] overflow-auto space-y-3.5">
                 {!askResponse ? (
-                  <div className="rounded-3xl border border-dashed border-slate-700 bg-slate-950/55 p-5 text-sm text-slate-400">
-                    <p className="font-medium text-slate-100">No response yet</p>
+                  <div className="rounded-3xl border border-dashed border-slate-200 bg-white/70 p-5 text-sm text-slate-600">
+                    <p className="font-medium text-slate-900">No response yet</p>
                     <p className="mt-1">
                       Ask a question to get an answer with supporting ESG
                       evidence.
@@ -965,47 +965,47 @@ export default function HomePage() {
                   </div>
                 ) : (
                   <>
-                    <div className="rounded-3xl border border-slate-700 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(8,15,28,0.94))] p-4 shadow-sm">
+                    <div className="rounded-3xl border border-indigo-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,247,255,0.95))] p-4 shadow-sm">
                       <div className="mb-3 flex items-center justify-between gap-3">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-600">
                           Response
                         </p>
-                        <div className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-medium text-slate-400">
+                        <div className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600">
                           AI summary
                         </div>
                       </div>
-                      <p className="mb-2 text-sm font-semibold text-slate-100">
+                      <p className="mb-2 text-sm font-semibold text-slate-900">
                         Answer
                       </p>
-                      <p className="whitespace-pre-line text-sm leading-6 text-slate-200">
+                      <p className="whitespace-pre-line text-sm leading-6 text-slate-800">
                         {askResponse.answer}
                       </p>
                     </div>
 
                     <div>
                       <div className="mb-3 flex items-center justify-between gap-3">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-600">
                           Supporting context
                         </p>
-                        <div className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-medium text-slate-400">
+                        <div className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600">
                           {askResponse.evidence.length} evidence items
                         </div>
                       </div>
-                      <p className="mb-2 text-sm font-semibold text-slate-100">
+                      <p className="mb-2 text-sm font-semibold text-slate-900">
                         Evidence
                       </p>
                       <div className="space-y-3">
                         {askResponse.evidence.map((item, index) => (
                           <div
                             key={`${item.page}-${index}`}
-                            className="rounded-3xl border border-slate-700 bg-slate-950/80 p-4 shadow-sm"
+                            className="rounded-3xl border border-slate-200 bg-white/85 p-4 shadow-sm"
                           >
                             <p className="hidden">
                               Page {item.page} · {item.category} ·{" "}
                               {item.claim_type}
                             </p>
                             <div className="mb-3 flex flex-wrap gap-2">
-                              <span className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-600">
                                 Page {item.page}
                               </span>
                               <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-700">
@@ -1015,10 +1015,10 @@ export default function HomePage() {
                                 {item.claim_type}
                               </span>
                             </div>
-                            <p className="text-sm leading-6 text-slate-200">
+                            <p className="text-sm leading-6 text-slate-800">
                               {item.sentence}
                             </p>
-                            <p className="mt-3 rounded-2xl bg-slate-900 px-3 py-2 text-xs leading-5 text-slate-400">
+                            <p className="mt-3 rounded-2xl bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600">
                               {item.reason}
                             </p>
                           </div>
@@ -1038,10 +1038,10 @@ export default function HomePage() {
         >
           <div id="pages-section" className="scroll-mt-20" />
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-semibold text-slate-50">
+            <h2 className="text-base font-semibold text-slate-900">
               Report Details
             </h2>
-            <div className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-400 shadow-sm">
+            <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
               Wide data view
             </div>
           </div>
@@ -1062,19 +1062,15 @@ function ScoreCard({
   value: string;
 }) {
   return (
-    <div className="dashboard-card metric-card rounded-3xl px-4 py-3.5 sm:px-4 sm:py-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-3">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">
-            {title}
-          </p>
-          <p className="text-[2rem] font-semibold tracking-[-0.04em] text-slate-50 sm:text-[2.05rem]">
-            {value}
-          </p>
-        </div>
-        <div className="mt-0.5 h-2.5 w-2.5 rounded-full bg-cyan-400/80 shadow-[0_0_18px_rgba(34,211,238,0.4)]" />
+    <div className="metric-card flex min-h-[154px] items-center justify-center rounded-[28px] border border-violet-100 bg-[rgba(243,239,249,0.88)] px-6 py-6 text-center shadow-[0_16px_36px_rgba(99,102,241,0.08)]">
+      <div className="space-y-2.5">
+        <p className="text-[3rem] font-normal tracking-[-0.06em] text-slate-900 sm:text-[3.15rem]">
+          {value}
+        </p>
+        <p className="mx-auto max-w-[180px] text-[12px] leading-6 text-slate-600 sm:text-[13px]">
+          {title}
+        </p>
       </div>
-      <div className="mt-4 h-px w-full bg-slate-800/90" />
     </div>
   );
 }

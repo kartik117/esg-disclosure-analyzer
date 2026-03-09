@@ -35,7 +35,7 @@ export default function PageDensityChart({ data }: Props) {
               color: "#e2e8f0",
             }}
           />
-          <Line type="monotone" dataKey="count" stroke="#38bdf8" strokeWidth={2.5} dot={false} />
+          <Line type="monotone" dataKey="count" stroke="#2563eb" strokeWidth={2.5} dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

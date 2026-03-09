@@ -20,7 +20,7 @@ type Props = {
   data: Item[];
 };
 
-const COLORS = ["#38bdf8", "#334155"];
+const COLORS = ["#2563eb", "#f97316"];
 
 export default function CoverageDonutChart({ data }: Props) {
   return (

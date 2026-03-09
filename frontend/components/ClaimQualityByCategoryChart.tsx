@@ -37,9 +37,9 @@ export default function ClaimQualityByCategoryChart({ data }: Props) {
             }}
           />
           <Legend wrapperStyle={{ color: "#cbd5e1", fontSize: "12px" }} />
-          <Bar dataKey="Measurable" stackId="a" fill="#38bdf8" />
-          <Bar dataKey="Neutral" stackId="a" fill="#64748b" />
-          <Bar dataKey="Vague" stackId="a" fill="#fb7185" />
+          <Bar dataKey="Measurable" stackId="a" fill="#2563eb" />
+          <Bar dataKey="Neutral" stackId="a" fill="#93c5fd" />
+          <Bar dataKey="Vague" stackId="a" fill="#f97316" />
         </BarChart>
       </ResponsiveContainer>
     </div>

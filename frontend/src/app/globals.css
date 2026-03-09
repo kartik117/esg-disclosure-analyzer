@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b1320;
-  --foreground: #dce7f5;
-  --surface: rgba(14, 24, 38, 0.88);
-  --border: rgba(148, 163, 184, 0.16);
+  --background: #f3f1f8;
+  --foreground: #0a2240;
+  --surface: rgba(249, 247, 253, 0.9);
+  --border: rgba(129, 140, 248, 0.24);
 }
 
 @theme inline {
@@ -26,9 +26,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   background-image:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 24%),
-    radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 28%),
-    linear-gradient(180deg, rgba(15, 23, 42, 0.18), transparent 40%);
+    radial-gradient(circle at top left, rgba(196, 181, 253, 0.22), transparent 28%),
+    radial-gradient(circle at 82% 0%, rgba(191, 219, 254, 0.2), transparent 24%),
+    linear-gradient(180deg, rgba(249, 247, 253, 0.88), rgba(243, 241, 248, 0.98));
+  min-height: 100vh;
 }
 
 * {
@@ -36,34 +37,47 @@ body {
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.18);
+  background: rgba(167, 139, 250, 0.22);
 }
 
 .dashboard-card {
   border: 1px solid var(--border);
   background: var(--surface);
-  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.22), 0 16px 38px rgba(2, 6, 23, 0.26);
-  backdrop-filter: blur(10px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 14px 34px rgba(99, 102, 241, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+  backdrop-filter: blur(14px);
 }
 
 .section-tile {
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(12, 20, 32, 0.94));
-  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.24), 0 18px 40px rgba(2, 6, 23, 0.3);
+  border: 1px solid rgba(129, 140, 248, 0.22);
+  background:
+    radial-gradient(circle at top right, rgba(167, 139, 250, 0.06), transparent 36%),
+    linear-gradient(180deg, rgba(250, 248, 253, 0.98), rgba(245, 242, 250, 0.94));
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 18px 44px rgba(99, 102, 241, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.42) inset;
 }
 
 .metric-card {
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: linear-gradient(180deg, rgba(18, 28, 42, 0.98), rgba(13, 21, 34, 0.95));
-  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.22), 0 10px 22px rgba(2, 6, 23, 0.24);
+  border: 1px solid rgba(167, 139, 250, 0.34);
+  background: rgba(232, 226, 240, 0.68);
+  box-shadow:
+    0 10px 24px rgba(129, 140, 248, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 }
 
 .chart-tile {
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(129, 140, 248, 0.2);
   background:
-    radial-gradient(circle at top right, rgba(34, 211, 238, 0.05), transparent 32%),
-    linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 19, 30, 0.95));
-  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.22), 0 12px 28px rgba(2, 6, 23, 0.28);
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.06), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(245, 248, 255, 0.94));
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 16px 34px rgba(99, 102, 241, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   transition:
     transform 220ms ease,
     box-shadow 220ms ease,
@@ -74,17 +88,20 @@ body {
 
 .chart-tile:hover {
   transform: scale(1.05);
-  border-color: rgba(96, 165, 250, 0.3);
+  border-color: rgba(99, 102, 241, 0.28);
   background:
-    radial-gradient(circle at top right, rgba(59, 130, 246, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(17, 27, 42, 1), rgba(12, 21, 33, 0.98));
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18), 0 24px 48px rgba(2, 6, 23, 0.38);
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(241, 245, 255, 0.96));
+  box-shadow: 0 10px 24px rgba(99, 102, 241, 0.12), 0 28px 54px rgba(15, 23, 42, 0.1);
 }
 
 .assistant-tile {
-  border: 1px solid rgba(34, 211, 238, 0.14);
+  border: 1px solid rgba(99, 102, 241, 0.22);
   background:
-    radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 32%),
-    linear-gradient(180deg, rgba(14, 24, 38, 0.98), rgba(10, 18, 28, 0.96));
-  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.24), 0 20px 42px rgba(2, 6, 23, 0.32);
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 247, 255, 0.94));
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 22px 46px rgba(99, 102, 241, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset;
 }

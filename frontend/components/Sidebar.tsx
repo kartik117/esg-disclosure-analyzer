@@ -9,8 +9,8 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="fixed left-0 top-0 z-30 flex h-screen w-20 flex-col items-center border-r border-white/60 bg-slate-950 px-3 py-5 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_24px_48px_rgba(15,23,42,0.28)]">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-sm font-semibold tracking-[0.18em] text-slate-950">
+    <aside className="fixed left-0 top-0 z-30 flex h-screen w-20 flex-col items-center border-r border-slate-200/80 bg-white/72 px-3 py-5 text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_24px_48px_rgba(99,102,241,0.08)] backdrop-blur-xl">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#4f46e5,#0ea5e9)] text-sm font-semibold tracking-[0.18em] text-white shadow-sm">
         ESG
       </div>
       <div className="mt-5 text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">
@@ -25,8 +25,8 @@ export default function Sidebar() {
             aria-label={item.label}
             className={`group flex h-11 w-11 items-center justify-center rounded-2xl border text-[11px] font-semibold tracking-[0.14em] transition ${
               index === 0
-                ? "border-emerald-400/30 bg-emerald-400/12 text-emerald-300"
-                : "border-white/10 bg-white/5 text-slate-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                ? "border-indigo-200 bg-indigo-50 text-indigo-600"
+                : "border-slate-200 bg-white/80 text-slate-600 hover:border-indigo-200 hover:bg-indigo-50/80 hover:text-indigo-600"
             }`}
           >
             <span>{item.shortLabel}</span>
@@ -37,7 +37,7 @@ export default function Sidebar() {
         <div className="text-[10px] font-medium uppercase tracking-[0.24em] text-slate-500">
           ESG
         </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-[10px] font-semibold tracking-[0.16em] text-slate-300">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 text-[10px] font-semibold tracking-[0.16em] text-slate-600">
           v1
         </div>
       </div>
